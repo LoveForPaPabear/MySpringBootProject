@@ -5,6 +5,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>dubbo</module>
+        <module>starter</module>
+        <module>redis</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

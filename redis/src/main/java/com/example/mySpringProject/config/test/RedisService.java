@@ -1,4 +1,4 @@
-package com.example.mySpringProject.test;
+package com.example.mySpringProject.config.test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

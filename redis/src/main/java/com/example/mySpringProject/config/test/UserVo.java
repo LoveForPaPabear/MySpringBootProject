@@ -1,4 +1,4 @@
-package com.example.mySpringProject.test;
+package com.example.mySpringProject.config.test;
 
 public class UserVo {
 
