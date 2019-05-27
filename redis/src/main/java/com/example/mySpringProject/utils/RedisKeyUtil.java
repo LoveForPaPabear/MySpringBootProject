@@ -1,4 +1,4 @@
-package com.example.mySpringProject.config.utils;
+package com.example.mySpringProject.utils;
 
 public class RedisKeyUtil {
 
