@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.TimeUnit;
 
-@Slf4j
-@RestController
-@RequestMapping("/redis")
 /**
  * @Author ppbear xuzheng/ppbeartoxuzheng@163.com
  * @Description redis 测试controller
@@ -20,6 +17,9 @@ import java.util.concurrent.TimeUnit;
  * @Param
  * @return
  **/
+@Slf4j
+@RestController
+@RequestMapping("/redis")
 public class RedisTestController {
 
     @Autowired
