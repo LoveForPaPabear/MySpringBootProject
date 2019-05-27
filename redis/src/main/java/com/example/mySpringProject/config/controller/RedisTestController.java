@@ -1,4 +1,4 @@
-package com.example.mySpringProject.config.test;
+package com.example.mySpringProject.config.controller;
 
 import com.example.mySpringProject.config.utils.RedisService;
 import lombok.extern.slf4j.Slf4j;
