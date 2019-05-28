@@ -1,8 +1,9 @@
-package com.example.mySpringProject;
+package com.example.myspringproject;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * @Author ppbear xuzheng/ppbeartoxuzheng@163.com
@@ -11,9 +12,9 @@ import org.springframework.cache.annotation.EnableCaching;
  * @Param
  * @return
  **/
-@SpringBootApplication(scanBasePackages = "com.example.mySpringProject")
+@SpringBootApplication(scanBasePackages = "com.example.myspringproject")
 @EnableCaching
-//@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application.properties")
 public class MySpringProjectApplication {
 
     public static void main(String[] args) {
