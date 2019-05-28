@@ -12,7 +12,7 @@ import org.springframework.context.annotation.PropertySource;
  * @Param
  * @return
  **/
-@SpringBootApplication(scanBasePackages = "com.example.myspringproject")
+@SpringBootApplication(scanBasePackages = "com.example.*")
 @EnableCaching
 @PropertySource("classpath:application.properties")
 public class MySpringProjectApplication {
