@@ -1,4 +1,4 @@
-package com.example.mySpringProject.config.config;
+package com.example.mySpringProject.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

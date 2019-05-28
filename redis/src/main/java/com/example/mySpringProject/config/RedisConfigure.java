@@ -1,4 +1,4 @@
-package com.example.mySpringProject.config.config;
+package com.example.mySpringProject.config;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
