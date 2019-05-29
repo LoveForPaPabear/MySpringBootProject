@@ -1,5 +1,7 @@
 package com.example.myspringproject;
 
+import com.alicp.jetcache.anno.config.EnableCreateCacheAnnotation;
+import com.alicp.jetcache.anno.config.EnableMethodCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,8 +15,10 @@ import org.springframework.cache.annotation.EnableCaching;
  * @return
  **/
 @Slf4j
-@SpringBootApplication(scanBasePackages = "com.example.*")
+@SpringBootApplication(scanBasePackages = {"com.example.*","com.alicp.jetcache.autoconfigure"})
 @EnableCaching
+@EnableMethodCache(basePackages = "com.example.*")
+@EnableCreateCacheAnnotation
 public class MySpringProjectApplication {
 
     public static void main(String[] args) {
