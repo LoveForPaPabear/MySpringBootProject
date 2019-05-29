@@ -24,7 +24,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <jetcache.version>2.4.4</jetcache.version>
+        <jetcache.version>2.5.11</jetcache.version>
     </properties>
 
     <dependencies>

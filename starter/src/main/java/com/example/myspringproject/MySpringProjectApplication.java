@@ -15,9 +15,9 @@ import org.springframework.cache.annotation.EnableCaching;
  * @return
  **/
 @Slf4j
-@SpringBootApplication(scanBasePackages = {"com.example.*","com.alicp.jetcache.autoconfigure"})
+@SpringBootApplication(scanBasePackages = {"com.example.myspringproject"})
 @EnableCaching
-@EnableMethodCache(basePackages = "com.example.*")
+@EnableMethodCache(basePackages = "com.example.myspringproject")
 @EnableCreateCacheAnnotation
 public class MySpringProjectApplication {
 

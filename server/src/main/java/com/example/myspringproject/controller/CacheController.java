@@ -4,6 +4,7 @@ import com.example.myspringproject.service.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @return
  **/
 @RestController
+@RequestMapping("/cache")
 public class CacheController {
 
     @Autowired
@@ -22,5 +24,6 @@ public class CacheController {
     @GetMapping("/getKey/{key}")
     public void getValue(@PathVariable String key) {
         cacheService.queryData(key);
+        cacheService.createCacheDemo();
     }
 }
