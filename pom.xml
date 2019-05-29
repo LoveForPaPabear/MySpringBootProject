@@ -7,6 +7,7 @@
         <module>dubbo</module>
         <module>starter</module>
         <module>redis</module>
+        <module>server</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
