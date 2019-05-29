@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * @Author ppbear xuzheng/ppbeartoxuzheng@163.com
  * @Description redis 测试controller
@@ -25,9 +23,12 @@ public class RedisTestController {
     private RedisService redisService;
 
     @GetMapping("/add")
-    public boolean addRedis() {
-        return redisService.expireKey("name", 20, TimeUnit.SECONDS);
+    public void addRedis() {
+        redisService.addKey("key", "keyName", 6000L);
     }
 
-
+    @GetMapping("/get")
+    public String getRedis() {
+        return redisService.getKey("key");
+    }
 }

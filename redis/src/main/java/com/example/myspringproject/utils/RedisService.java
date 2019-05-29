@@ -2,6 +2,7 @@ package com.example.myspringproject.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -11,6 +12,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * @Author ppbear xuzheng/ppbeartoxuzheng@163.com
+ * @Description redis 实现类
+ * @Date 11:38 2019/5/29
+ * @Param
+ * @return
+ **/
 @Component
 public class RedisService {
     @Autowired
@@ -25,8 +33,6 @@ public class RedisService {
      * 不设置过期时长
      */
     public static final long NOT_EXPIRE = -1;
-
-
 
 
     public boolean existsKey(String key) {
@@ -74,16 +80,6 @@ public class RedisService {
     }
 
     /**
-     * 删除Key的集合
-     *
-     * @param keys
-     */
-    public void deleteKey(Collection<String> keys) {
-        Set<String> kSet = keys.stream().map(k -> k).collect(Collectors.toSet());
-        redisTemplate.delete(kSet);
-    }
-
-    /**
      * 设置key的生命周期
      *
      * @param key
@@ -92,6 +88,16 @@ public class RedisService {
      */
     public Boolean expireKey(String key, long time, TimeUnit timeUnit) {
         return redisTemplate.expire(key, time, timeUnit);
+    }
+
+    /**
+     * 删除Key的集合
+     *
+     * @param keys
+     */
+    public void deleteKey(Collection<String> keys) {
+        Set<String> kSet = keys.stream().map(k -> k).collect(Collectors.toSet());
+        redisTemplate.delete(kSet);
     }
 
     /**
@@ -124,5 +130,15 @@ public class RedisService {
         redisTemplate.persist(key);
     }
 
+    public void addKey(String key, String name, Long timeUnit) {
+        ValueOperations<String, String> stringOperation = redisTemplate.opsForValue();
+        stringOperation.set(key, name);
+        expireKey(key, timeUnit, TimeUnit.MILLISECONDS);
+    }
+
+    public String getKey(String key) {
+        ValueOperations<String, String> stringOperation = redisTemplate.opsForValue();
+        return stringOperation.get(key);
+    }
 
 }
