@@ -3,6 +3,7 @@ package com.example.myspringproject.service.impl;
 import com.alicp.jetcache.Cache;
 import com.alicp.jetcache.anno.CreateCache;
 import com.example.myspringproject.service.CacheService;
+import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,9 +28,10 @@ public class CacheServiceImpl implements CacheService {
         String myValue = cache.get("myKey");
         System.out.println("get 'myKey' from cache:" + myValue);
     }
+
     @Override
     public List<String> queryData(String key) {
-        System.out.println("进来了");
-        return null;
+        System.out.println(key + "进来了");
+        return Lists.newArrayList("1");
     }
 }

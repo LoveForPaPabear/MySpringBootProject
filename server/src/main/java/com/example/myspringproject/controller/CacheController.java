@@ -21,9 +21,11 @@ public class CacheController {
     @Autowired
     private CacheService cacheService;
 
+
     @GetMapping("/getKey/{key}")
     public void getValue(@PathVariable String key) {
         cacheService.queryData(key);
-        cacheService.createCacheDemo();
+        cacheService.queryData(key);
+//        cacheService.createCacheDemo();
     }
 }

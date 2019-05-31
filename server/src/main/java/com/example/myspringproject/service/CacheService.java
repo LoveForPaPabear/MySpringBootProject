@@ -1,6 +1,5 @@
 package com.example.myspringproject.service;
 
-import com.alicp.jetcache.anno.CacheRefresh;
 import com.alicp.jetcache.anno.CacheType;
 import com.alicp.jetcache.anno.Cached;
 
@@ -33,8 +32,7 @@ public interface CacheService {
      * 如果定义为BOTH，会使用LOCAL和REMOTE组合成两级缓存
      * @Param [key]
      **/
-    @Cached(name ="userCache",key = "#key", expire = 60, cacheType = CacheType.BOTH)
-    @CacheRefresh(refresh = 60)
+    @Cached(name ="userCache", expire = 1000, cacheType = CacheType.BOTH)
     List<String> queryData(String key);
 
 }

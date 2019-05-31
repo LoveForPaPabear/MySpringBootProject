@@ -19,9 +19,8 @@
         </dependency>
         <dependency>
             <groupId>com.alicp.jetcache</groupId>
-            <artifactId>jetcache-anno-api</artifactId>
+            <artifactId>jetcache-starter-redis</artifactId>
             <version>${jetcache.version}</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
