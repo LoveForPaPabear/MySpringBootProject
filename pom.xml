@@ -23,8 +23,8 @@
     <description>Demo project for Spring Boot</description>
 
     <properties>
-        <java.version>1.8</java.version>
         <jetcache.version>2.5.11</jetcache.version>
+        <java.version>1.8</java.version>
     </properties>
 
     <dependencies>

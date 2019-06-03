@@ -11,5 +11,11 @@
 
     <artifactId>cache</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.alicp.jetcache</groupId>
+            <artifactId>jetcache-starter-redis</artifactId>
+            <version>${jetcache.version}</version>
+        </dependency>
+    </dependencies>
 </project>
