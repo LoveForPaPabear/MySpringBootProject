@@ -1,5 +1,6 @@
 package com.example.myspringproject;
 
+import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 import com.alicp.jetcache.anno.config.EnableCreateCacheAnnotation;
 import com.alicp.jetcache.anno.config.EnableMethodCache;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(scanBasePackages = {"com.example.myspringproject"})
 @EnableMethodCache(basePackages = "com.example.myspringproject")
 @EnableCreateCacheAnnotation
+@EnableDubboConfiguration
 public class MySpringProjectApplication {
 
     public static void main(String[] args) {

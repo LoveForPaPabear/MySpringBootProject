@@ -25,6 +25,7 @@
     <properties>
         <jetcache.version>2.5.11</jetcache.version>
         <java.version>1.8</java.version>
+        <dubbo.version>2.0.0</dubbo.version>
     </properties>
 
     <dependencies>
@@ -53,11 +54,6 @@
             <version>4.12</version>
         </dependency>
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo</artifactId>
-            <version>2.6.5</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.9</version>
@@ -69,6 +65,7 @@
             <version>1.18.8</version>
             <scope>provided</scope>
         </dependency>
+        <!--guava-->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -85,6 +82,12 @@
             <groupId>com.alicp.jetcache</groupId>
             <artifactId>jetcache-starter-redis</artifactId>
             <version>${jetcache.version}</version>
+        </dependency>
+        <!--启动类-->
+        <dependency>
+            <groupId>com.alibaba.spring.boot</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+            <version>${dubbo.version}</version>
         </dependency>
 
     </dependencies>
