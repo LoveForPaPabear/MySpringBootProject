@@ -9,24 +9,15 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>starter</artifactId>
-
+    <artifactId>dubbo_provider</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>redis</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>server</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>cache</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>com.alibaba.spring.boot</groupId>
@@ -35,11 +26,9 @@
         </dependency>
         <dependency>
             <groupId>com.example</groupId>
-            <artifactId>dubbo_provider</artifactId>
+            <artifactId>dubbo_interface</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
-
     </dependencies>
-
-
 </project>

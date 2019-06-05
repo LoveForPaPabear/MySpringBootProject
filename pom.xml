@@ -4,11 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
-        <module>dubbo</module>
+        <module>dubbo_provider</module>
         <module>starter</module>
         <module>redis</module>
         <module>server</module>
         <module>cache</module>
+        <module>dubbo_consumer</module>
+        <module>dubbo_interface</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
