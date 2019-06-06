@@ -11,6 +11,7 @@
         <module>cache</module>
         <module>dubbo_consumer</module>
         <module>dubbo_interface</module>
+        <module>shiro</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -28,6 +29,7 @@
         <jetcache.version>2.5.11</jetcache.version>
         <java.version>1.8</java.version>
         <dubbo.version>2.0.0</dubbo.version>
+        <shiro-spring.version>1.4.0</shiro-spring.version>
     </properties>
 
     <dependencies>
@@ -91,6 +93,32 @@
             <artifactId>dubbo-spring-boot-starter</artifactId>
             <version>${dubbo.version}</version>
         </dependency>
+        <!--shiro-->
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro-spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>${shiro-spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-ehcache</artifactId>
+            <version>${shiro-spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-web</artifactId>
+            <version>${shiro-spring.version}</version>
+        </dependency>
+
 
     </dependencies>
 
