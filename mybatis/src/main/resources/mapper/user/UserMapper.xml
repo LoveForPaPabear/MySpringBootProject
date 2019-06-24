@@ -7,6 +7,14 @@
         <result column="name" property="name"/>
     </resultMap>
 
+    <select id="getUserList" resultMap="userMap">
+        select pk_id,name
+        from user
+        <if test="pkId!=null">
+            where pk_id = #{pkId}
+        </if>
+    </select>
+
     <select id="addUserList">
         insert into user(name) values
         <foreach collection="list" separator="," item="factor">
@@ -19,12 +27,6 @@
             update user set name =#{item.name} where pk_id = #{item.pkId}
         </foreach>
     </update>
-
-    <select id="getUserList" resultMap="userMap">
-        select pk_id,name
-        from user
-        where pk_id = #{pkId}
-    </select>
 
     <delete id="deleteUser">
         delete

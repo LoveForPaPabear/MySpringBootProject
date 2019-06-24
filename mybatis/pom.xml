@@ -32,5 +32,10 @@
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>${druid-spring.version}</version>
         </dependency>
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper</artifactId>
+            <version>${ognl.version}</version>
+        </dependency>
     </dependencies>
 </project>

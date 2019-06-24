@@ -2,6 +2,7 @@ package com.example.myspringproject.controller;
 
 import com.example.myspringproject.model.User;
 import com.example.myspringproject.service.UserService;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,9 @@ public class UserController {
 
 
     @GetMapping("/user")
-    public List<User> getValue(User user) {
-        return userService.getUserList(user);
+    public PageInfo getValue(User user) {
+        List<User> userList = userService.getUserList(user);
+        return new PageInfo<>(userList);
     }
 
     @PostMapping("/user")

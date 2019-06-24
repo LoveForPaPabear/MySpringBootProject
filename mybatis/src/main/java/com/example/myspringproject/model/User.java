@@ -12,4 +12,9 @@ public class User implements Serializable {
     private String pkId;
 
     private String name;
+
+    private int pageNum;
+
+    private int pageSize;
+
 }

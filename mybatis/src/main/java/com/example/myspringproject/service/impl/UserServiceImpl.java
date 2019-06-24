@@ -3,6 +3,7 @@ package com.example.myspringproject.service.impl;
 import com.example.myspringproject.mapper.UserMapper;
 import com.example.myspringproject.model.User;
 import com.example.myspringproject.service.UserService;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUserList(User user) {
+        PageHelper.startPage(user.getPageNum(), user.getPageSize());
         return userMapper.getUserList(user);
     }
 
