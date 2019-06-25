@@ -4,11 +4,12 @@
 <mapper namespace="com.example.myspringproject.mapper.UserMapper">
     <resultMap id="userMap" type="com.example.myspringproject.model.User">
         <result column="pk_id" property="pkId"/>
-        <result column="name" property="name"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
     </resultMap>
 
     <select id="getUserList" resultMap="userMap">
-        select pk_id,name
+        select pk_id,username,password
         from user
         <if test="pkId!=null">
             where pk_id = #{pkId}
@@ -33,5 +34,14 @@
         from user
         where pk_id = #{pkId}
     </delete>
+
+    <select id="findUserByName" resultMap="userMap">
+        SELECT pk_id,username,password
+        FROM user
+        WHERE
+        <if test="username!=null and username!=''">
+            username = #{username}
+        </if>
+    </select>
 
 </mapper>

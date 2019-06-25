@@ -1,16 +1,26 @@
 package com.example.myspringproject.config;
 
-import com.example.myspringproject.model.MyShiroRelam;
+import com.example.myspringproject.cache.CustomCacheManager;
+import com.example.myspringproject.cache.RedisSessionDao;
+import com.example.myspringproject.model.MyShiroRealm;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.DefaultFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author ppbear
@@ -22,6 +32,14 @@ public class ShiroConfig {
         System.out.println("ShiroConfig  init ....");
     }
 
+    /**
+     * 管理生命周期
+     **/
+    @Bean
+    public static LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
+    }
+
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
@@ -29,8 +47,6 @@ public class ShiroConfig {
         //拦截器.
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         //权限配置
-        //filterChainDefinitionMap.put("/stu/addStu","perms[student:aaaa]");
-        // 配置不会被拦截的链接 顺序判断  相关静态资源
         filterChainDefinitionMap.put("/assets/**", DefaultFilter.anon.toString());
         filterChainDefinitionMap.put("/css/**", DefaultFilter.anon.toString());
         filterChainDefinitionMap.put("/font/**", DefaultFilter.anon.toString());
@@ -38,16 +54,9 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/js/**", DefaultFilter.anon.toString());
         filterChainDefinitionMap.put("/products/**", DefaultFilter.anon.toString());
         filterChainDefinitionMap.put("/Widget/**", DefaultFilter.anon.toString());
-
-        //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterChainDefinitionMap.put("/logout", "logout");
-
-        //<!-- 过滤链定义，从上向下顺序执行，一般将/**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
-
-        //<!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
-        filterChainDefinitionMap.put("/**", DefaultFilter.anon.toString());// 先配置可以通过
-//        filterChainDefinitionMap.put("/**", DefaultFilter.authc.toString());
-        // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
+        // 先配置可以通过
+        filterChainDefinitionMap.put("/**", DefaultFilter.anon.toString());
         shiroFilterFactoryBean.setLoginUrl("/login");
         // 登录成功后要跳转的链接
         shiroFilterFactoryBean.setSuccessUrl("/index");
@@ -58,29 +67,57 @@ public class ShiroConfig {
         return shiroFilterFactoryBean;
     }
 
-//    @Bean
-//    public SecurityManager securityManager(MyShiroRelam realm, CacheManager cacheManager, SessionManager sessionManager) {
-//        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-//        securityManager.setSessionManager(sessionManager);
-//        securityManager.setRealm(realm);
-//        securityManager.setCacheManager(cacheManager);
-//        return securityManager;
-//    }
-
-//    @Bean
-//    public CacheManager cacheManager(CustomCacheManager cacheManager) {
-//        CacheManager ehCacheManager = new CacheManager();
-//        ehCacheManager.setCacheManager(cacheManager);
-//        return ehCacheManager;
-//    }
-
-
     @Bean
-    public MyShiroRelam MyShiroRelam() {
-        return new MyShiroRelam();
+    public SecurityManager securityManager(MyShiroRealm realm, CacheManager cacheManager, SessionManager sessionManager) {
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        //会话管理
+        securityManager.setSessionManager(sessionManager);
+        //自定义realm
+        securityManager.setRealm(realm);
+        //实现缓存管理
+        securityManager.setCacheManager(cacheManager);
+        return securityManager;
     }
 
-    /*
+
+    //这里就是会话管理的操作类
+    @Bean
+    public SessionDAO sessionDAO() {
+        return new RedisSessionDao();
+    }
+
+    /**
+     * 加密方式配置
+     */
+    @Bean
+    public HashedCredentialsMatcher hashedCredentialsMatcher() {
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+        ////散列算法:这里使用MD5算法;
+        hashedCredentialsMatcher.setHashAlgorithmName("md5");
+        ////散列的次数，比如散列两次，相当于 md5(md5(""));
+        hashedCredentialsMatcher.setHashIterations(2);
+        return hashedCredentialsMatcher;
+    }
+
+    /**
+     * 缓存管理器
+     **/
+    @Bean
+    public CacheManager CacheManager() {
+        return new CustomCacheManager();
+    }
+
+    @Bean
+    public SimpleCookie simpleCookie() {
+        return new SimpleCookie("REDISSESSION");
+    }
+
+    @Bean
+    public MyShiroRealm MyShiroRealm() {
+        return new MyShiroRealm();
+    }
+
+    /**
      * 开启@RequirePermission注解的配置，要结合DefaultAdvisorAutoProxyCreator一起使用，或者导入aop的依赖
      */
     @Bean
@@ -90,14 +127,21 @@ public class ShiroConfig {
         return authorizationAttributeSourceAdvisor;
     }
 
-    /*
-     *安全管理器配置
+    /**
+     * 定义Spring MVC的异常处理器
      */
     @Bean
-    public SecurityManager securityManager() {
-        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(MyShiroRelam());
-        return securityManager;
+    public SimpleMappingExceptionResolver createSimpleMappingExceptionResolver() {
+        SimpleMappingExceptionResolver r = new SimpleMappingExceptionResolver();
+        Properties mappings = new Properties();
+        //数据库异常处理
+        mappings.setProperty("DatabaseException", "databaseError");
+        //处理shiro的认证未通过异常
+        mappings.setProperty("UnauthorizedException", "403");
+        r.setExceptionMappings(mappings);
+        r.setDefaultErrorView("error");
+        r.setExceptionAttribute("ex");
+        return r;
     }
 
 }

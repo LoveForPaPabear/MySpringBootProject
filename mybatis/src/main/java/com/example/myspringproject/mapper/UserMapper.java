@@ -15,4 +15,6 @@ public interface UserMapper {
     List<User> getUserList(User user);
 
     int deleteUser(User user);
+
+    User findUserByName(User user);
 }

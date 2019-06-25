@@ -13,4 +13,6 @@ public interface UserService {
     List<User> getUserList(User user);
 
     int deleteUser(User user);
+
+    User findUserByName(User user);
 }
