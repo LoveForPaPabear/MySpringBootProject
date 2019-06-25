@@ -14,6 +14,7 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.DefaultFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
@@ -32,15 +33,8 @@ public class ShiroConfig {
         System.out.println("ShiroConfig  init ....");
     }
 
-    /**
-     * 管理生命周期
-     **/
-    @Bean
-    public static LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
-        return new LifecycleBeanPostProcessor();
-    }
 
-    @Bean
+    @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
@@ -68,19 +62,28 @@ public class ShiroConfig {
     }
 
     @Bean
-    public SecurityManager securityManager(MyShiroRealm realm, CacheManager cacheManager, SessionManager sessionManager) {
+    public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         //会话管理
-        securityManager.setSessionManager(sessionManager);
+        securityManager.setSessionManager(sessionManager());
         //自定义realm
-        securityManager.setRealm(realm);
+        securityManager.setRealm(MyShiroRealm());
         //实现缓存管理
-        securityManager.setCacheManager(cacheManager);
+        securityManager.setCacheManager(cacheManager());
         return securityManager;
     }
 
+    @Bean
+    public SessionManager sessionManager() {
+        DefaultWebSessionManager defaultWebSessionManager = new DefaultWebSessionManager();
+        defaultWebSessionManager.setSessionIdCookie(simpleCookie());
+        defaultWebSessionManager.setSessionDAO(sessionDAO());
+        return defaultWebSessionManager;
+    }
 
-    //这里就是会话管理的操作类
+    /**
+     * 这里就是会话管理的操作类
+     */
     @Bean
     public SessionDAO sessionDAO() {
         return new RedisSessionDao();
@@ -103,7 +106,7 @@ public class ShiroConfig {
      * 缓存管理器
      **/
     @Bean
-    public CacheManager CacheManager() {
+    public CacheManager cacheManager() {
         return new CustomCacheManager();
     }
 
@@ -142,6 +145,14 @@ public class ShiroConfig {
         r.setDefaultErrorView("error");
         r.setExceptionAttribute("ex");
         return r;
+    }
+
+    /**
+     * 管理生命周期 注意这个 static
+     **/
+    @Bean
+    public static LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
     }
 
 }
