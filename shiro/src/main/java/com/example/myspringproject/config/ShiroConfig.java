@@ -50,7 +50,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/Widget/**", DefaultFilter.anon.toString());
         filterChainDefinitionMap.put("/logout", "logout");
         // 先配置可以通过
-        filterChainDefinitionMap.put("/**", DefaultFilter.anon.toString());
+        filterChainDefinitionMap.put("/**", DefaultFilter.authc.toString());
         shiroFilterFactoryBean.setLoginUrl("/login");
         // 登录成功后要跳转的链接
         shiroFilterFactoryBean.setSuccessUrl("/index");
