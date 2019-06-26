@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
+import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -38,6 +39,11 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
+
+        Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();
+        filters.put("authc", new MyAuthenticationFilter());
+        filters.put("roles", new MyAuthorizationFilter());
+
         //拦截器.
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         //权限配置
@@ -89,7 +95,6 @@ public class ShiroConfig {
      */
     @Bean
     public SessionDAO sessionDAO() {
-//        return new RedisSessionDao();
         EnterpriseCacheSessionDAO enterpriseCacheSessionDAO = new EnterpriseCacheSessionDAO();
         enterpriseCacheSessionDAO.setActiveSessionsCacheName("shiro-activeSessionCache");
         return enterpriseCacheSessionDAO;
