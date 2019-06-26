@@ -1,36 +1,43 @@
 package com.example.myspringproject.cache;
 
+import com.example.myspringproject.utils.JedisUtil;
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
+import redis.clients.jedis.Jedis;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.*;
 
-public class RedisCache<K,V> implements Cache<K,V> {
-
-    public String getKeyPrefix() {
-        return keyPrefix;
-    }
-
-    public void setKeyPrefix(String keyPrefix) {
-        this.keyPrefix = keyPrefix;
-    }
+/**
+ * @Author ppbear xuzheng/ppbeartoxuzheng@163.com
+ * @Description
+ * @Date 16:19 2019/6/26
+ * @Param
+ * @return
+ **/
+public class RedisCache<K, V> implements Cache<K, V> {
 
     private String keyPrefix = "shiro_redis_session:";
-
 
     @Override
     public Object get(Object key) throws CacheException {
 
-//        byte[] bytes = getByteKey(key);
-//        byte[] value = JedisClientSingle.getJedis().get(bytes);
-//        if(value == null){
-//            return null;
-//        }
-//        return ByteSourceUtils.deserialize(value);
-        return null;
+        byte[] bytes = getByteKey(key);
+        byte[] value = JedisUtil.getJedis().get(bytes);
+        if (value == null) {
+            return null;
+        }
+        return SerializationUtils.deserialize(value);
+    }
+
+    private byte[] getByteKey(Object k) {
+        if (k instanceof String) {
+            String key = keyPrefix + k;
+            return key.getBytes();
+        } else {
+            return SerializationUtils.serialize((Serializable) k);
+        }
     }
 
     /**
@@ -39,27 +46,26 @@ public class RedisCache<K,V> implements Cache<K,V> {
     @Override
     public Object put(Object key, Object value) throws CacheException {
 
-//        Jedis jedis = JedisClientSingle.getJedis();
-//
-//        jedis.set(getByteKey(key), ByteSourceUtils.serialize((Serializable)value));
-//        byte[] bytes = jedis.get(getByteKey(key));
-//        Object object = ByteSourceUtils.deserialize(bytes);
+        Jedis jedis = JedisUtil.getJedis();
 
-        return new Object();
+        jedis.set(getByteKey(key), SerializationUtils.serialize((Serializable) value));
+        byte[] bytes = jedis.get(getByteKey(key));
+        Object object = SerializationUtils.deserialize(bytes);
+
+        return object;
 
     }
 
     @Override
     public Object remove(Object key) throws CacheException {
-//        Jedis jedis = JedisClientSingle.getJedis();
-//
-//        byte[] bytes = jedis.get(getByteKey(key));
-//
-//        jedis.del(getByteKey(key));
-//
-//        return ByteSourceUtils.deserialize(bytes);
+        Jedis jedis = JedisUtil.getJedis();
 
-        return new Object();
+        byte[] bytes = jedis.get(getByteKey(key));
+
+        jedis.del(getByteKey(key));
+
+        return SerializationUtils.deserialize(bytes);
+
     }
 
     /**
@@ -67,7 +73,7 @@ public class RedisCache<K,V> implements Cache<K,V> {
      */
     @Override
     public void clear() throws CacheException {
-//        JedisClientSingle.getJedis().flushDB();
+        JedisUtil.getJedis().flushDB();
     }
 
     /**
@@ -75,9 +81,8 @@ public class RedisCache<K,V> implements Cache<K,V> {
      */
     @Override
     public int size() {
-//        Long size = JedisClientSingle.getJedis().dbSize();
-//        return size.intValue();
-        return 1;
+        Long size = JedisUtil.getJedis().dbSize();
+        return size.intValue();
     }
 
     /**
@@ -85,12 +90,12 @@ public class RedisCache<K,V> implements Cache<K,V> {
      */
     @Override
     public Set keys() {
-//        Set<byte[]> keys = JedisClientSingle.getJedis().keys(new String("*").getBytes());
-//        Set<Object> set = new HashSet<Object>();
-//        for (byte[] bs : keys) {
-//            set.add(ByteSourceUtils.deserialize(bs));
-//        }
-        return null;
+        Set<byte[]> keys = JedisUtil.getJedis().keys(new String("*").getBytes());
+        Set<Object> set = new HashSet<>();
+        for (byte[] bs : keys) {
+            set.add(SerializationUtils.deserialize(bs));
+        }
+        return set;
     }
 
 
@@ -102,10 +107,10 @@ public class RedisCache<K,V> implements Cache<K,V> {
         Set keys = this.keys();
 
         List<Object> values = new ArrayList<Object>();
-//        for (Object key : keys) {
-//            byte[] bytes = JedisClientSingle.getJedis().get(getByteKey(key));
-//            values.add(ByteSourceUtils.deserialize(bytes));
-//        }
+        for (Object key : keys) {
+            byte[] bytes = JedisUtil.getJedis().get(getByteKey(key));
+            values.add(SerializationUtils.deserialize(bytes));
+        }
         return values;
     }
 }

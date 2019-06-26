@@ -1,12 +1,12 @@
 package com.example.myspringproject.config;
 
 import com.example.myspringproject.cache.CustomCacheManager;
-import com.example.myspringproject.cache.RedisSessionDao;
 import com.example.myspringproject.model.MyShiroRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -48,6 +48,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/js/**", DefaultFilter.anon.toString());
         filterChainDefinitionMap.put("/products/**", DefaultFilter.anon.toString());
         filterChainDefinitionMap.put("/Widget/**", DefaultFilter.anon.toString());
+
+        filterChainDefinitionMap.put("/user/login", DefaultFilter.anon.toString());
         filterChainDefinitionMap.put("/logout", "logout");
         // 先配置可以通过
         filterChainDefinitionMap.put("/**", DefaultFilter.authc.toString());
@@ -70,6 +72,7 @@ public class ShiroConfig {
         securityManager.setRealm(MyShiroRealm());
         //实现缓存管理
         securityManager.setCacheManager(cacheManager());
+
         return securityManager;
     }
 
@@ -86,7 +89,10 @@ public class ShiroConfig {
      */
     @Bean
     public SessionDAO sessionDAO() {
-        return new RedisSessionDao();
+//        return new RedisSessionDao();
+        EnterpriseCacheSessionDAO enterpriseCacheSessionDAO = new EnterpriseCacheSessionDAO();
+        enterpriseCacheSessionDAO.setActiveSessionsCacheName("shiro-activeSessionCache");
+        return enterpriseCacheSessionDAO;
     }
 
     /**
@@ -120,6 +126,7 @@ public class ShiroConfig {
         return new MyShiroRealm();
     }
 
+
     /**
      * 开启@RequirePermission注解的配置，要结合DefaultAdvisorAutoProxyCreator一起使用，或者导入aop的依赖
      */
@@ -142,8 +149,8 @@ public class ShiroConfig {
         //处理shiro的认证未通过异常
         mappings.setProperty("UnauthorizedException", "403");
         r.setExceptionMappings(mappings);
-        r.setDefaultErrorView("error");
-        r.setExceptionAttribute("ex");
+//        r.setDefaultErrorView("error");
+//        r.setExceptionAttribute("ex");
         return r;
     }
 

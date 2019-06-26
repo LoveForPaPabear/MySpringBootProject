@@ -70,8 +70,6 @@ public class RedisSessionDao extends CachingSessionDAO {
        /*jedis.set(getByteKey(session.getId()),SerializationUtils.serialize((Serializable)session));
        jedis.expire(SerializationUtils.serialize((PREFIX+session.getId())),EXPRIE);*/
         jedis.setex(getByteKey(session.getId()), EXPRIE, SerializationUtils.serialize((Serializable) session));
-
-
     }
 
 
@@ -81,7 +79,6 @@ public class RedisSessionDao extends CachingSessionDAO {
         Jedis jedis = JedisUtil.getJedis();
         jedis.del(getByteKey(session.getId()));
         JedisUtil.closeJedis(jedis);
-
     }
 
 
