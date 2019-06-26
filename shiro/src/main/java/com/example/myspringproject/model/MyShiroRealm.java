@@ -46,7 +46,6 @@ public class MyShiroRealm extends AuthorizingRealm {
         System.out.println("验证用户登录信息");
         String username = (String) authenticationToken.getPrincipal();
         System.out.println("登录用户名： " + username);
-        System.out.println(authenticationToken.getCredentials());
         //从数据库查询出User信息及用户关联的角色，权限信息，以备权限分配时使用
         User userSo = new User();
         userSo.setUsername(username);
