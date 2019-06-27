@@ -52,4 +52,9 @@ public class UserController {
         response.addCookie(cookie);
     }
 
+    @GetMapping("/loginOut")
+    public void loginOut() {
+        SecurityUtils.getSubject().logout();
+    }
+
 }

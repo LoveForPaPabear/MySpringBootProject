@@ -56,7 +56,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/Widget/**", DefaultFilter.anon.toString());
 
         filterChainDefinitionMap.put("/user/login", DefaultFilter.anon.toString());
-        filterChainDefinitionMap.put("/logout", "logout");
+
+        filterChainDefinitionMap.put("/user/loginOut", DefaultFilter.authc.toString());
         // 先配置可以通过
         filterChainDefinitionMap.put("/**", DefaultFilter.authc.toString());
         shiroFilterFactoryBean.setLoginUrl("/login");

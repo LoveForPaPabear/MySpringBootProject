@@ -1,7 +1,9 @@
 package com.example.myspringproject.cache;
 
 import com.example.myspringproject.utils.JedisUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SerializationUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import redis.clients.jedis.Jedis;
@@ -16,6 +18,7 @@ import java.util.*;
  * @Param
  * @return
  **/
+@Slf4j
 public class RedisCache<K, V> implements Cache<K, V> {
 
     private String keyPrefix = "shiro_redis_session:";
@@ -45,25 +48,22 @@ public class RedisCache<K, V> implements Cache<K, V> {
      */
     @Override
     public Object put(Object key, Object value) throws CacheException {
-
         Jedis jedis = JedisUtil.getJedis();
-
         jedis.set(getByteKey(key), SerializationUtils.serialize((Serializable) value));
         byte[] bytes = jedis.get(getByteKey(key));
-        Object object = SerializationUtils.deserialize(bytes);
-
-        return object;
-
+        log.info("增加的sessionId为:{}", getByteKey(key));
+        return SerializationUtils.deserialize(bytes);
     }
 
     @Override
     public Object remove(Object key) throws CacheException {
         Jedis jedis = JedisUtil.getJedis();
+        Serializable serializable = SecurityUtils.getSubject().getSession().getId();
 
-        byte[] bytes = jedis.get(getByteKey(key));
+        byte[] bytes = jedis.get(getByteKey(serializable.toString()));
 
-        jedis.del(getByteKey(key));
-
+        jedis.del(getByteKey(serializable.toString()));
+        log.info("删除的sessionId为:{}", getByteKey(serializable.toString()));
         return SerializationUtils.deserialize(bytes);
 
     }
