@@ -152,7 +152,7 @@
         <!--rocketmq-->
         <dependency>
             <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-spring-boot-starter</artifactId>
+            <artifactId>rocketmq-spring-boot</artifactId>
             <version>${rocketmq.version}</version>
         </dependency>
         <!--guava-->
