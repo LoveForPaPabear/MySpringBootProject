@@ -52,9 +52,13 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>4.3.18.RELEASE</version>
+            <version>${guava.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.example.myspringproject</groupId>
+            <artifactId>rocketmq</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 

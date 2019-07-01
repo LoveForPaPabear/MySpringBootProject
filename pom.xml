@@ -13,6 +13,7 @@
         <module>dubbo_interface</module>
         <module>shiro</module>
         <module>mybatis</module>
+        <module>rocketmq</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -35,6 +36,8 @@
         <pageHelper.version>1.2.3</pageHelper.version>
         <druid-spring.version>1.1.10</druid-spring.version>
         <ognl.version>3.4.2</ognl.version>
+        <rocketmq.version>2.0.3</rocketmq.version>
+        <guava.version>4.3.18.RELEASE</guava.version>
     </properties>
 
     <dependencies>
@@ -144,6 +147,19 @@
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper</artifactId>
             <version>${ognl.version}</version>
+        </dependency>
+
+        <!--rocketmq-->
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-spring-boot-starter</artifactId>
+            <version>${rocketmq.version}</version>
+        </dependency>
+        <!--guava-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${guava.version}</version>
         </dependency>
     </dependencies>
 
