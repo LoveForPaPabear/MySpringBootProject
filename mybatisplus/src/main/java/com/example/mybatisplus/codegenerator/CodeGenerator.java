@@ -14,19 +14,24 @@ import java.util.List;
 public class CodeGenerator {
 
     public static void main(String[] args) throws InterruptedException {
+        String tableName = "student";
+        String packageName = "student";
+        String fileOutPath ="/mybatisplus/src/main/java/com/example/mybatisplus";
+
+
         AutoGenerator mpg = new AutoGenerator();
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
-        gc.setOutputDir(projectPath + "com.example.mybatisplus");
+        gc.setOutputDir(projectPath + fileOutPath);
         gc.setFileOverride(true);
         gc.setActiveRecord(true);
         gc.setEnableCache(false);// XML 二级缓存
         gc.setBaseResultMap(true);// XML ResultMap
         gc.setBaseColumnList(true);// XML columList
         gc.setOpen(false);
-        gc.setAuthor("gf");
+        gc.setAuthor("xuzheng");
 
 
         // 自定义文件命名，注意 %s 会自动填充表实体属性！
@@ -49,7 +54,7 @@ public class CodeGenerator {
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent("com.example.mybatisplus");
+        pc.setParent(packageName);
         pc.setController("controller");
         pc.setEntity("entity");
         mpg.setPackageInfo(pc);
@@ -66,7 +71,7 @@ public class CodeGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输入文件名称
-                return projectPath + "com/example/mybatisplus/resources/mapper/"
+                return projectPath + "/com/example/mybatisplus/resources/mapper/"
                         + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });
@@ -81,7 +86,7 @@ public class CodeGenerator {
         // 表名生成策略
         strategy.setNaming(NamingStrategy.underline_to_camel);
         // 需要生成的表
-        strategy.setInclude(new String[]{"student"});
+        strategy.setInclude(new String[]{tableName});
         // 排除生成的表
         strategy.setEntityLombokModel(true);
 
